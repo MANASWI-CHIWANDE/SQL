@@ -1,0 +1,102 @@
+DBMS PRACTICAL ASSIGNMENT- 1
+ 
+Body for above schema :
+create table manufactureres
+(
+  code_PK number(5),
+  name varchar2(20),
+  primary key(code_PK)
+);
+
+desc manufactureres;
+drop table manufactureres
+
+create table products
+(
+  code_PK number(5),
+  name varchar2(20),
+  Price number(7),
+  Manufacturer number(5),
+  primary key(code_PK),
+foreign key (manufacturer) references manufactureres(code_PK)
+);
+select * from products;
+select * from manufactureres;
+insert into manufactureres
+values(11005,'xioami');
+ 
+
+insert into products
+values(11221 , 'android mobile',21000 ,11003 );
+insert into products
+values( 11222, 'power Bank', 3145 ,11002 );
+insert into products
+values( 11223, 'laptop', 71000, 11002);
+insert into products
+values( 11224, 'iPhone 13', 41050 , 11001);
+insert into products
+values( 11225, 'PC',65999 ,11005 );
+insert into products
+values( 11226, 'ipod', 34555, 11003 );
+insert into products
+values( 11227, 'lcd', 67999, 11004);
+insert into products
+values(11228 , 'copy machine', 23000, 11004);
+insert into products
+values(11229 , ' avionics', 3400, 11005);
+insert into products
+values( 11230, 'harddisk', 200,11003 );
+insert into products
+values( 11231, 'cd', 72,11002 );
+insert into products
+values( 11232, 'pendrive', 50,11005 );
+ 
+
+
+1	Select the names of all the products in the store.
+select name from products;
+ 
+2	Select the names and the prices of all the products in the store.
+select name , price from products;
+ 
+3	Select the name of the products with a price less than or equal to 200.
+select name from products where price<=200;
+ 
+4	Select all the products with a price between 60 and 120.
+select * from products where price >60 and price <120;
+select * from products where price between 60 and 120;
+ 
+5	Select the name and price in cents (i.e., the price must be multiplied by 100).
+select name , price*100 cent from products;
+ 
+6	Compute the average price of all the products.
+select avg(price) from products;
+ 
+7	Compute the average price of all products with manufacturer code equal to 2.
+select avg(price) from products where Manufacturer = 11002;
+ 
+8	Compute the number of products with a price larger than or equal to 180.
+select count (*)from products where price >=180;
+ 
+9	Select the name and price of all products with a price larger than or equal to $180, and sort first by price (in descending order), and then by name (in ascending order).
+select name , price from products where price >=180 order by price desc , name asc;
+ 
+10	Select all the data from the products, including all the data for each product's manufacturer.
+select p.* , m.name from products p inner join manufactureres m on p.manufacturer =m.code_PK ;
+ 
+11	Select the product name, price, and manufacturer name of all the products.
+select p.name,p.price , m.name from products p inner join manufactureres m on p.manufacturer =m.code_PK ;
+ 
+12	Select the average price of each manufacturer's products, showing only the manufacturer's code.
+select avg(price) , manufacturer from products group by manufacturer;
+ 
+13	Select the average price of each manufacturer's products, showing the manufacturer's name.
+select avg(p.price), m.name from manufactureres m join products p on p.manufacturer = m.code_PK group by m.name;
+ 
+14	Select the names of manufacturer whose products have an average price larger than or equal to $150.
+select m.name , avg(p.price) from manufactureres m join products p on p.manufacturer = m.code_PK group by m.name having avg(p.price)>=150;
+ 
+15	Select the name and price of the cheapest product.
+select name , price from products where price = (select min(price) from products );
+ 
+

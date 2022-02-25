@@ -1,0 +1,82 @@
+create table warehouse(
+code number(5),
+PRIMARY KEY(code),
+location varchar(15),
+capacity number(20)
+);
+create table boxes(
+code number(5),
+PRIMARY KEY(code),
+contents varchar(20),
+value number(15),
+ware number(5),
+FOREIGN KEY(ware) REFERENCES warehouse(code)
+);
+
+desc boxes;
+desc warehouse;
+insert into warehouse
+values(1,'Chicago',3);
+insert into warehouse
+values(2,'Chicago',5);
+
+insert into warehouse
+values(3,'New Delhi',7);
+insert into warehouse
+values(4,'Pune',8);
+insert into warehouse
+values(5,'New York',4);
+select * from warehouse;
+select * from boxes;
+
+insert into boxes values(001,'Book',150,3);
+insert into boxes values(002,'Book',150,3);
+insert into boxes values(003,'Book',150,1);
+insert into boxes values(004,'Paper',250,4);
+insert into boxes values(005,'Board games',300,2);
+insert into boxes values(006,'Board games',150,5);
+insert into boxes values(007,'Scissors',400,4);
+insert into boxes values(008,'Book',350,3);
+insert into boxes values(009,'Book',250,3);
+insert into boxes values(010,'Book',150,1);
+insert into boxes values(011,'Book',150,1);
+insert into boxes values(012,'Book',150,1);
+
+select * from boxes
+where value>150;
+
+select distinct contents from boxes;
+
+select round(avg(value),2) from boxes;
+
+select ware, avg(value) from boxes
+group by ware;
+
+select ware, avg(value) from boxes
+group by ware having avg(value)>150;
+
+select boxes.code,boxes.contents,warehouse.location from boxes
+left outer join warehouse on boxes.ware=warehouse.code;
+
+select ware,count(*)as items from boxes
+group by ware;
+
+select code from warehouse
+join (select ware temp_a, count(*) temp_b from boxes group by ware)temp on warehouse.code=temp_a
+where warehouse.capacity<=temp_b;
+
+select boxes.code, warehouse.location from boxes
+left outer join warehouse on boxes.code=warehouse.code
+where warehouse.location ='Chicago';
+
+insert into warehouse
+values(6,'New York',8);
+
+update boxes
+set value=0.75*value;
+
+delete from boxes
+where value>260;
+
+Another method:
+select Code from Warehouse where Capacity<(select count(*) from Boxes where Ware=Warehouses.Code)
